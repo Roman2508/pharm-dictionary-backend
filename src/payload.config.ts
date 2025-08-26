@@ -8,19 +8,22 @@ import { fileURLToPath } from 'url'
 import sharp from 'sharp'
 
 import { Users } from './collections/Users'
-import { Media } from './collections/Media'
+import { Dictionary } from './collections/Dictionary'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 export default buildConfig({
+  serverURL: 'http://localhost:7777',
+  cors: ['http://localhost:5173'],
+
   admin: {
     user: Users.slug,
     importMap: {
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media],
+  collections: [Users, Dictionary],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
@@ -28,7 +31,15 @@ export default buildConfig({
   },
   db: postgresAdapter({
     pool: {
-      connectionString: process.env.DATABASE_URI || '',
+      // connectionString: process.env.DATABASE_URI || '',
+      database: process.env.DATABASE_NAME || '',
+      host: process.env.DATABASE_HOST || '',
+      port: parseInt(process.env.DATABASE_PORT || '5432', 10),
+      user: process.env.DATABASE_USER || '',
+      password: process.env.DATABASE_PASSWORD || '',
+      ssl: {
+        rejectUnauthorized: false,
+      },
     },
   }),
   sharp,
