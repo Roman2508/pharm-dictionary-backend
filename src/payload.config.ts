@@ -9,6 +9,7 @@ import sharp from 'sharp'
 
 import { Users } from './collections/Users'
 import { Dictionary } from './collections/Dictionary'
+import ExcelImporter from './components/dictionary-excel-actions'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
