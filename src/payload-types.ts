@@ -69,6 +69,7 @@ export interface Config {
   collections: {
     users: User;
     dictionary: Dictionary;
+    categories: Category;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -77,6 +78,7 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     dictionary: DictionarySelect<false> | DictionarySelect<true>;
+    categories: CategoriesSelect<false> | CategoriesSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -145,6 +147,21 @@ export interface Dictionary {
   id: number;
   ukrainian: string;
   latin: string;
+  category: number | Category;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categories".
+ */
+export interface Category {
+  id: number;
+  name: string;
+  /**
+   * Число для впорядкування категорій (менше = вище)
+   */
+  order: number;
   updatedAt: string;
   createdAt: string;
 }
@@ -162,6 +179,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'dictionary';
         value: number | Dictionary;
+      } | null)
+    | ({
+        relationTo: 'categories';
+        value: number | Category;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -234,6 +255,17 @@ export interface UsersSelect<T extends boolean = true> {
 export interface DictionarySelect<T extends boolean = true> {
   ukrainian?: T;
   latin?: T;
+  category?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categories_select".
+ */
+export interface CategoriesSelect<T extends boolean = true> {
+  name?: T;
+  order?: T;
   updatedAt?: T;
   createdAt?: T;
 }

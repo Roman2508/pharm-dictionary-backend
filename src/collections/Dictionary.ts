@@ -21,6 +21,14 @@ export const Dictionary: CollectionConfig = {
       type: 'text',
       required: true,
     },
+    {
+      name: 'category',
+      label: 'Категорія',
+      type: 'relationship',
+      relationTo: 'categories',
+      hasMany: false,
+      required: true,
+    },
   ],
 
   admin: {
@@ -79,7 +87,7 @@ export const Dictionary: CollectionConfig = {
           for (const word of words) {
             await req.payload.create({
               collection: 'dictionary',
-              data: { ukrainian: word[0], latin: word[1] },
+              data: { ukrainian: word[0], latin: word[1], category: word[2] },
             })
           }
 
