@@ -1,4 +1,3 @@
-import * as XLSX from 'xlsx'
 import type { CollectionConfig } from 'payload'
 
 export const Dictionary: CollectionConfig = {
@@ -25,13 +24,14 @@ export const Dictionary: CollectionConfig = {
       name: 'category',
       label: 'Категорія',
       type: 'relationship',
-      relationTo: 'categories',
+      relationTo: 'dictionary_categories',
       hasMany: false,
       required: true,
     },
   ],
 
   admin: {
+    useAsTitle: 'latin',
     components: {
       beforeListTable: [
         {

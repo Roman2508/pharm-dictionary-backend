@@ -7,15 +7,17 @@ import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import { payloadCloudPlugin } from '@payloadcms/payload-cloud'
 
 import { Users } from './collections/Users'
+import { Exercise } from './collections/Exercises'
 import { Dictionary } from './collections/Dictionary'
-import { Categories } from './collections/Categories'
+import { ExerciseCategories } from './collections/ExerciseCategories'
+import { DictionaryCategories } from './collections/DictionaryCategories'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 export default buildConfig({
-  serverURL: 'http://localhost:7777',
-  cors: ['http://localhost:5173'],
+  serverURL: process.env.SERVER_URL,
+  cors: [process.env.CORS_ORIGIN || 'http://localhost:5173'],
 
   admin: {
     user: Users.slug,
@@ -23,7 +25,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Dictionary, Categories],
+  collections: [Users, Dictionary, DictionaryCategories, Exercise, ExerciseCategories],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

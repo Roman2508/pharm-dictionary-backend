@@ -1,7 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
-export const Categories: CollectionConfig = {
-  slug: 'categories',
+export const ExerciseCategories: CollectionConfig = {
+  slug: 'exercise_categories',
   access: {
     read: () => true,
     create: () => true,
@@ -22,6 +22,25 @@ export const Categories: CollectionConfig = {
       admin: {
         description: 'Число для впорядкування категорій (менше = вище)',
       },
+    },
+
+    {
+      name: 'type',
+      label: 'Тип категорії (Тест чи картка)',
+      type: 'select',
+      options: [
+        { label: 'Тест', value: 'test' },
+        { label: 'Картка', value: 'card' },
+      ],
+      defaultValue: 'test',
+    },
+
+    {
+      name: 'exercises',
+      label: 'Вправи',
+      type: 'relationship',
+      relationTo: 'exercise',
+      hasMany: true,
     },
   ],
   admin: {

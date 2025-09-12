@@ -26,7 +26,7 @@ const excelFromObject = (data: any) => {
 
 const excelFromArray = (data: any) => {
   // 2. Преобразуем данные для Excel
-  const worksheetData = data.docs.map((item: any) => [item.ukrainian, item.latin])
+  const worksheetData = data.docs.map((item: any) => [item.ukrainian, item.latin, item.category.id])
 
   // 3. Создаем рабочий лист без заголовков
   const worksheet = XLSX.utils.aoa_to_sheet(worksheetData) // используем массив массивов

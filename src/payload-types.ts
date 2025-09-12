@@ -69,7 +69,9 @@ export interface Config {
   collections: {
     users: User;
     dictionary: Dictionary;
-    categories: Category;
+    dictionary_categories: DictionaryCategory;
+    exercise: Exercise;
+    exercise_categories: ExerciseCategory;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -78,7 +80,9 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     dictionary: DictionarySelect<false> | DictionarySelect<true>;
-    categories: CategoriesSelect<false> | CategoriesSelect<true>;
+    dictionary_categories: DictionaryCategoriesSelect<false> | DictionaryCategoriesSelect<true>;
+    exercise: ExerciseSelect<false> | ExerciseSelect<true>;
+    exercise_categories: ExerciseCategoriesSelect<false> | ExerciseCategoriesSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -147,21 +151,55 @@ export interface Dictionary {
   id: number;
   ukrainian: string;
   latin: string;
-  category: number | Category;
+  category: number | DictionaryCategory;
   updatedAt: string;
   createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "categories".
+ * via the `definition` "dictionary_categories".
  */
-export interface Category {
+export interface DictionaryCategory {
   id: number;
   name: string;
   /**
    * Число для впорядкування категорій (менше = вище)
    */
   order: number;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "exercise".
+ */
+export interface Exercise {
+  id: number;
+  is_published?: boolean | null;
+  title: string;
+  description?: string | null;
+  type?: ('test' | 'card') | null;
+  question: {
+    correct: number | Dictionary;
+    incorrect: (number | Dictionary)[];
+    id?: string | null;
+  }[];
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "exercise_categories".
+ */
+export interface ExerciseCategory {
+  id: number;
+  name: string;
+  /**
+   * Число для впорядкування категорій (менше = вище)
+   */
+  order: number;
+  type?: ('test' | 'card') | null;
+  exercises?: (number | Exercise)[] | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -181,8 +219,16 @@ export interface PayloadLockedDocument {
         value: number | Dictionary;
       } | null)
     | ({
-        relationTo: 'categories';
-        value: number | Category;
+        relationTo: 'dictionary_categories';
+        value: number | DictionaryCategory;
+      } | null)
+    | ({
+        relationTo: 'exercise';
+        value: number | Exercise;
+      } | null)
+    | ({
+        relationTo: 'exercise_categories';
+        value: number | ExerciseCategory;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -261,11 +307,42 @@ export interface DictionarySelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "categories_select".
+ * via the `definition` "dictionary_categories_select".
  */
-export interface CategoriesSelect<T extends boolean = true> {
+export interface DictionaryCategoriesSelect<T extends boolean = true> {
   name?: T;
   order?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "exercise_select".
+ */
+export interface ExerciseSelect<T extends boolean = true> {
+  is_published?: T;
+  title?: T;
+  description?: T;
+  type?: T;
+  question?:
+    | T
+    | {
+        correct?: T;
+        incorrect?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "exercise_categories_select".
+ */
+export interface ExerciseCategoriesSelect<T extends boolean = true> {
+  name?: T;
+  order?: T;
+  type?: T;
+  exercises?: T;
   updatedAt?: T;
   createdAt?: T;
 }
