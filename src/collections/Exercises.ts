@@ -69,7 +69,7 @@ export const Exercise: CollectionConfig = {
           type: 'relationship',
           relationTo: 'dictionary',
           hasMany: true,
-          required: true,
+          required: false,
         },
       ],
       required: true,

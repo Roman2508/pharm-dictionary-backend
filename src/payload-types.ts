@@ -181,7 +181,7 @@ export interface Exercise {
   type?: ('test' | 'card') | null;
   question: {
     correct: number | Dictionary;
-    incorrect: (number | Dictionary)[];
+    incorrect?: (number | Dictionary)[] | null;
     id?: string | null;
   }[];
   updatedAt: string;
